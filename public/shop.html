@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Granola</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <nav><a href="index.html">← Home</a></nav>
+    <main id="product-grid" class="grid"></main>
+    <a href="cart.html" class="cart-floating">Cart (<span id="cart-count">0</span>)</a>
+
+    <script type="module">
+        import { products, renderProducts } from './js/products.js';
+        import { getCartCount } from './js/cart.js';
+
+        renderProducts(products, document.getElementById('product-grid'));
+        document.getElementById('cart-count').textContent = getCartCount();
+    </script>
+</body>
+
+</html>
