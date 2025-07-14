@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <nav><a href="shop.html">← Keep Shopping</a></nav>
+    <main id="cart-container"></main>
+
+    <script type="module">
+        import { loadCart, renderCart, totalCents } from './js/cart.js';
+
+        const cartContainer = document.getElementById('cart-container');
+        renderCart(cartContainer);
+
+        // Stripe Checkout
+        document.addEventListener('click', async (e) => {
+            if (e.target.id === 'checkout') {
+                const res = await fetch('/.netlify/functions/create-checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ cart: loadCart() })
+                });
+                const { url } = await res.json();
+                window.location = url; // redirect to stripe
+            }
+        });
+    </script>
+</body>
+
+</html>
