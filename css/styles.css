@@ -2,12 +2,24 @@
     --tan: #f3eee6;
     --brown: #5c4632;
     --accent: #d8a75c;
-    font-family: "Nunito", sans-serif;
+    
+    --radius: 1rem;
+    --shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-body { background: var(--tan); color: var(--brown); line-height: 1.6; }
+body {
+    background: var(--tan);
+    color: var(--brown);
+    line-height: 1.6;
+    font-family: "Nunito", sans-serif;
+}
+
+h1, h2, h3 {
+    font-family: "Playfair Display", serif;
+    letter-spacing: 0.02rem;
+}
 
 .hero {
     min-height: 90vh;
@@ -23,10 +35,16 @@ body { background: var(--tan); color: var(--brown); line-height: 1.6; }
     background: var(--accent);
     color: #fff;
     border: none;
-    padding: .75rem 1.5rem;
+    padding: .85rem 1.75rem;
     font-size: 1rem;
     border-radius: 9999px;
     cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn:hover, button:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow);
 }
 
 .grid {
