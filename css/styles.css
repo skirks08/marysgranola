@@ -34,7 +34,20 @@ h1, h2, h3 {
 
 .hero::after {
     content: "";
-    
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+}
+
+.hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 640px;
+}
+
+.hero h1 {
+    font-size: clamp(2.75rem, 6vw, 4.25rem);
+    margin-bottom: 0.75rem;
 }
 
 .btn, button {
