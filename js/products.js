@@ -13,18 +13,39 @@ export function renderProducts(list, mount) {
     mount.innerHTML = list.map(p => `
     <article class="card">
       <img src="${p.image}" alt="${p.name}" loading="lazy" />
-      <h3>${p.name}</h3>
-      <p>$${(p.price_cents/100).toFixed(2)}</p>
-      <button data-add="${p.id}">Add to Cart</button>
+      <div class="card-body">
+        <h3>${p.name}</h3>
+        <p class="price">$${(p.price_cents/100).toFixed(2)}</p>
+        <p class="desc">${p.description}</p>
+        <button data-add="${p.id}" aria-label="Add ${p.name} to cart">Add to Cart</button>
+      </div>
     </article>
   `).join('');
 
+  const cartCountEl = document.getElementById('cart-count');
+
   mount.addEventListener('click', (e) => {
-    const id = e.target.dataset.add;
-    if (!id) return;
+    const btn = e.target.closest('button[data-add]');
+    if (!btn) return;
+
+    const id = btn.dataset.add;
     const cart = JSON.parse(localStorage.getItem('cart') || '{}');
+
     cart[id] = (cart[id] || 0) + 1;
     localStorage.setItem('cart', JSON.stringify(cart));
-    alert('Added!');
+
+    // Update floating cart count
+    if (cartCountEl) {
+      cartCountEl.textContent = Object.values(cart).reduce((a, b) => a + b, 0);
+    }
+
+    // UX feedback (no alert)
+    btn.textContent = 'Added ✓';
+    btn.disabled = true;
+
+    setTimeout(() => {
+      btn.textContent = 'Add to Cart';
+      btn.disabled = false;
+    }, 1200);
   });
 }; 
