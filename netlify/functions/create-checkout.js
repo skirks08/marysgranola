@@ -1,23 +1,19 @@
 import Stripe from 'stripe';
 
-export default async (req, res) => {
-    if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method not Allowed' });
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+export const handler = async (event) => {
+    if (event.httpMethod !== 'POST') {
+        return { statusCode: 405, body: 'Method Not Allowed' };
     }
 
-    const stripe =  new Stripe(process.env.STRIPE_SECRET_KEY, {
-        apiVersion: '2025-03-31',
-    });
+    const { cart } = JSON.parse(event.body);
 
-    const { cart } = JSON.parse(req.body);
-
-    // Map cart IDs to Stripe Price IDs
     const priceMap = {
-        'honey-almond': 'price_abc123', // replace with real price ids
-        // ...
-    };
+        "honey-almond": 899,
+    }
 
-    const line_items = Object.entries(cart).map(([id, qty]) => ({
+    const lineItems = Object.entries(cart).map(([id, qty]) => ({
         price: priceMap[id],
         quantity: qty,
     }));
@@ -25,13 +21,19 @@ export default async (req, res) => {
     try {
         const session = await stripe.checkout.sessions.create({
             mode: 'payment',
-            line_items,
+            line_items: lineItems,
             success_url: `${process.env.URL}/success.html`,
             cancel_url: `${process.env.URL}/cart.html`,
         });
-        return res.status(200).json({ url: session.url });
-    } catch (err) {
-        console.error(err);
-        return res.status(500).json({ error: 'Stripe error' });
+
+        return {
+            statusCode: 200,
+            body: JSON.stringify({ url: session.url }),
+        };
+    } catch (error) {
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: error.message }),
+        };
     }
 };
