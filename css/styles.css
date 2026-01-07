@@ -75,6 +75,11 @@ h1, h2, h3 {
     box-shadow: var(--shadow);
 }
 
+button:focus-visible,
+a:focus-visible {
+    outline: 3px solid var(--accent);
+}
+
 .grid {
     display: grid;
     gap: 1.5rem;
