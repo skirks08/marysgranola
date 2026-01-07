@@ -24,6 +24,7 @@
         // Stripe Checkout
         document.addEventListener('click', async (e) => {
             if (e.target.id === 'checkout') {
+                console.log('Checkout Clicked');
                 const res = await fetch('/.netlify/functions/create-checkout', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
