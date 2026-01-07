@@ -31,6 +31,7 @@
                     body: JSON.stringify({ cart: loadCart() })
                 });
                 const { url } = await res.json();
+                console.log(url)
                 window.location = url; // redirect to stripe
             }
         });
